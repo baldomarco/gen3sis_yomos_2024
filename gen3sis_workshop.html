@@ -189,7 +189,7 @@ Federseestation, Bad Buchau, Germany</p>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># look at folder structure</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(landscape_dir)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "distances_full"  "distances_local" "landscapes.rds" </code></pre>
+<pre><code>[1] "distances_local" "landscapes.rds" </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set path to config_file</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>config_file <span class="ot">&lt;-</span> <span class="fu">here</span>(<span class="st">"config/config_simple.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -241,7 +241,7 @@ Federseestation, Bad Buchau, Germany</p>
 </div>
 <div style="background-color: lightgreen; padding: 1px;">
 <p>🏋💻 <strong>Exercise</strong> [max 10 min] Create a way to visualize the last 100 time steps of this gen3sis input. If possible think of abstracting for any x,y,z1,z2,z3… temporal data-frame. If possible, try to make a function.</p>
-<strong>Answer:</strong>
+<p><strong>Answer:</strong></p>
 <details>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># solution 1</span></span>
@@ -302,7 +302,7 @@ Federseestation, Bad Buchau, Germany</p>
 </div>
 <div style="background-color: lightgreen; padding: 1px;">
 <p>🏋💻 <strong>Exercise</strong> [max 10 min] Open the config file config_simple and go though the eco-evolutionary rules that will be applied to the landscape.</p>
-<strong>Answer:</strong>
+<p><strong>Answer:</strong></p>
 <details>
 <p><strong>Settings</strong></p>
 <p>We start our simulation at the latest avaiable time, i.e.&nbsp;5Ma, which corresponds to time step 500 since 1 time-step = 10 kyr. We end it a the latest available time-step. Sometimes, simulations can go forever, to avoid this we limit the maximum total number of species alive in a simulation to 50000 with max_number_of_species and the maximum number of species within one site to 20000 with max_number_of_coexisting_species. This stops and flags simulations that generate too many species (time constrain). We define which traits we will consider in our simulation with traits_names, in our example, species have a dispersal ability a optimum temperature and a temperature width trait.</p>

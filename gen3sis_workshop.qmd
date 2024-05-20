@@ -11,21 +11,21 @@ execute:
   echo: TRUE
   warning: false
 ---
+
 ::: {#center .flex-item style="flex: 1; display: flex; justify-content: center;"}
-<img src="https://static.wixstatic.com/media/c2b417_0e2b0aceec0f49dfb07ae5b40a912e56~mv2.png/v1/crop/x_0,y_0,w_1100,h_431,q_90,enc_auto/YoMos-Logo-Querformat_websitebackgorund_.png" style="width: 50%; ">
+<img src="https://static.wixstatic.com/media/c2b417_0e2b0aceec0f49dfb07ae5b40a912e56~mv2.png/v1/crop/x_0,y_0,w_1100,h_431,q_90,enc_auto/YoMos-Logo-Querformat_websitebackgorund_.png" style="width: 50%; "/>
 :::
 
-Yomos 2024
-May 13-17, 2024  
-Federseestation, Bad Buchau, Germany  
+Yomos 2024 May 13-17, 2024\
+Federseestation, Bad Buchau, Germany
 
 ::: {#right .flex-item style="flex: 1; display: flex; justify-content: center;"}
-<img src="qr-code-workshop.jpg" style="width: 100px;">
-https://github.com/ohagen/gen3sis_yomos_2024
+<img src="qr-code-workshop.jpg" style="width: 100px;"/> https://github.com/ohagen/gen3sis_yomos_2024
 :::
 
 ## Preamble
 
+```{=html}
 <style>
     .top-left-image {
         float: left;
@@ -36,13 +36,10 @@ https://github.com/ohagen/gen3sis_yomos_2024
         clear: both;
     }
 </style>
+```
+<img src="https://raw.githubusercontent.com/ohagen/DispDiv3/main/inst/logo/dispdiv3.png" alt="gen3sis art" class="top-left-image"/>
 
-<img src="https://raw.githubusercontent.com/ohagen/DispDiv3/main/inst/logo/dispdiv3.png" alt="gen3sis art" class="top-left-image">
-
-This workshop is designed to provide foundational knowledge on how to use gen3sis for various research questions, which is crucial for defining models within the modeling cycle. The course will briefly introduce the philosophical context of natural science and the principles of mechanistic models. 
-Participants will engage in hands-on exercises, applying gen3sis to explore hypotheses concerning the genesis and maintenance of biodiversity within the R programming environment. Practical experiences will equip attendees with the necessary background to craft their own biodiversity models. 
-The workshop mainly uses simulated data, leading to valuable insights about the interplay between processes and patterns in biodiversity research.
-Please bring a laptop equipped with R and the latest version of gen3sis to participate effectively. For those eager to maximize their workshop experience, I recommend reading the [methods paper](https://doi.org/10.1371/journal.pbio.3001340) and exploring this [repo](https://github.com/ohagen/DispDiv3) which includes some of the materials (such as landscapes and configuration files) we'll be using. The related article is forthcoming and currently in press.
+This workshop is designed to provide foundational knowledge on how to use gen3sis for various research questions, which is crucial for defining models within the modeling cycle. The course will briefly introduce the philosophical context of natural science and the principles of mechanistic models. Participants will engage in hands-on exercises, applying gen3sis to explore hypotheses concerning the genesis and maintenance of biodiversity within the R programming environment. Practical experiences will equip attendees with the necessary background to craft their own biodiversity models. The workshop mainly uses simulated data, leading to valuable insights about the interplay between processes and patterns in biodiversity research. Please bring a laptop equipped with R and the latest version of gen3sis to participate effectively. For those eager to maximize their workshop experience, I recommend reading the [methods paper](https://doi.org/10.1371/journal.pbio.3001340) and exploring this [repo](https://github.com/ohagen/DispDiv3) which includes some of the materials (such as landscapes and configuration files) we'll be using. The related article is forthcoming and currently in press.
 
 ## Introduction
 
@@ -119,12 +116,12 @@ lc$mean_temp[100:110, c(1:4, first_step_pos)]
 plot(rast(lc$mean_temp[ ,c(1:3, first_step_pos)]))
 ```
 
-<div style="background-color: lightgreen; padding: 1px;">
+::: {style="background-color: lightgreen; padding: 1px;"}
+🏋💻 **Exercise** \[max 10 min\] Create a way to visualize the last 100 time steps of this gen3sis input. If possible think of abstracting for any x,y,z1,z2,z3... temporal data-frame. If possible, try to make a function.
 
-🏋💻 **Exercise** [max 10 min] 
-Create a way to visualize the last 100 time steps of this gen3sis input. If possible think of abstracting for any x,y,z1,z2,z3... temporal data-frame. If possible, try to make a function.
+**Answer:**
 
-**Answer:** <details>
+<details>
 
 ```{r, eval=FALSE}
 # solution 1
@@ -159,14 +156,15 @@ plot_landenv(lc$elevation, times=c(100:0), speed=0.1)
 # plot_landenv(lc$min_temp, times="all", reverse=T, speed=0.03)
 
 ```
+
 </details>
-</div>
+:::
 
 ### 2.2 Config
 
 Open this config file in Rstudio or any text editor to see the rules that will be applied to the landscape.
 
-```{r}  
+```{r}
 # load config
 cf <- create_input_config(config_file = here("config/config_simple.R"))
 # list all main elements of the config file
@@ -175,11 +173,13 @@ names(cf$gen3sis)
 names(cf$gen3sis$general)
 ```
 
-<div style="background-color: lightgreen; padding: 1px;">
-🏋💻 **Exercise** [max 10 min] 
-Open the config file config_simple and go though the eco-evolutionary rules that will be applied to the landscape.
+::: {style="background-color: lightgreen; padding: 1px;"}
+🏋💻 **Exercise** \[max 10 min\] Open the config file config_simple and go though the eco-evolutionary rules that will be applied to the landscape.
 
-**Answer:** <details>
+**Answer:**
+
+<details>
+
 <strong>Settings</strong>
 
 We start our simulation at the latest avaiable time, i.e. 5Ma, which corresponds to time step 500 since 1 time-step = 10 kyr. We end it a the latest available time-step. Sometimes, simulations can go forever, to avoid this we limit the maximum total number of species alive in a simulation to 50000 with max_number_of_species and the maximum number of species within one site to 20000 with max_number_of_coexisting_species. This stops and flags simulations that generate too many species (time constrain). We define which traits we will consider in our simulation with traits_names, in our example, species have a dispersal ability a optimum temperature and a temperature width trait.
@@ -192,7 +192,6 @@ The observer function saves and plot changes (real-time during model execution) 
 
 The create_ancestor_species function creates the first specie(s) in the simulation. In this case, we create one species spread across all avaiable sites with low dispersal ability, optimum temperature at 20 degrees C and a temperature width (+-1).
 
-
 <strong> Dispersal </strong>
 
 The dispersal function iterates over all species populations and determines the connectivity between sites, crucial for trait evolution and specialization, as well as the colonization of new sites. In our example, species dispersal is stochastic and uniform across all species. I.e. an exponential distribution with the rate denominator as the dispersal trait value.
@@ -200,7 +199,6 @@ The dispersal function iterates over all species populations and determines the 
 <strong> Speciation </strong>
 
 The speciation iterates over every species separately, registers populations’ geographic occupancy (species range), and determines when geographic isolation between population clusters is higher than a user-defined threshold, triggering a lineage splitting event of cladogenesis. The clustering of occupied sites is based on the species’ dispersal capacity and the landscape connection costs. Over time, disconnected clusters gradually accumulate incompatibility, analogous to genetic differentiation. When the divergence between clusters is above the speciation threshold, those clusters become two or more distinct species, and a divergence matrix reset follows. On the other hand, if geographic clusters come into secondary contact before the speciation occurs, they coalesce and incompatibilities are gradually reduced to zero.
-
 
 <strong>Evolution</strong>
 
@@ -210,11 +208,8 @@ Think of it as trait evolution. Clustered populations (exchanging genes) have th
 
 The ecology function determines the abundance or presence of the populations in occupied sites of each species. The function iterates over all occupied sites and updates the species population abundances or presences on the basis of local environmental values, updated co-occurrence patterns and species traits. In this example we use only presence/absence data, i.e. abundances 0 or 1.
 
-
 </details>
-
-</div>
-
+:::
 
 ## 3. Run a basic simulation
 
@@ -232,7 +227,6 @@ On sim we store the simulation output summary, while most of the information and
 ```{r}
 sim <- readRDS(here("output/config_simple/sgen3sis.rds"))
 ```
-
 
 In addition to the simulation output summary, we include a flag indicating whether the simulation completed successfully or the criteria for stopping, such as an excessive number of species. This section also provides system information and simulation-specific parameters.
 
@@ -264,10 +258,9 @@ phy <- read.nexus(file.path(here("output/config_simple/phy.nex")))
 plot(phy)
 ```
 
-<div style="background-color: lightgreen; padding: 1px;">
-🏋💻 **Exercise** [max 2 min] 
-Think of 3 ways to change extinction rates?
-</div>
+::: {style="background-color: lightgreen; padding: 1px;"}
+🏋💻 **Exercise** \[max 2 min\] Think of 3 ways to change extinction rates?
+:::
 
 ## 4. Customize simulations
 
@@ -321,11 +314,9 @@ plot_summary(readRDS(here("output/config_M2_TH_mod/sgen3sis.rds")))
 plot(read.nexus(file.path(here("output/config_M2_TH_mod/phy.nex"))))
 ```
 
-<div style="background-color: lightgreen; padding: 1px;">
-
-🏋💻 **Exercise** [15 min] 
-Review the config_M2_TH.R file and try to understand what it's doing. Consider how you might modify the configuration or apply it to a specific research question.
-</div>
+::: {style="background-color: lightgreen; padding: 1px;"}
+🏋💻 **Exercise** \[15 min\] Review the config_M2_TH.R file and try to understand what it's doing. Consider how you might modify the configuration or apply it to a specific research question.
+:::
 
 ## 5. Troubleshoot
 
@@ -355,6 +346,5 @@ get_dispersal_values <- function(n, species, landscape, config) {
     }
 }
 ```
-
 
 ![](https://64.media.tumblr.com/f5436f265630043b4163b3b796436229/tumblr_nerv5zwzCr1sgl0ajo1_500.gif)

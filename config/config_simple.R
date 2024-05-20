@@ -2,17 +2,17 @@
 ### General settings ###
 ########################
 
-random_seed =76985
-start_time = 250
-end_time = NA
+random_seed =76985                      # it is to set the randomization
+start_time = 250                        # from 250 undread thousand years
+end_time = NA                           # till the most recent period
 max_number_of_species =50000
-max_number_of_coexisting_species =20000
-initial_abundance =  1
+max_number_of_coexisting_species =20000 # it is giving a max num of interactions instead then go for ever
+initial_abundance =  1                  # The first ancestor species
 
 # set for first time
 # assign("ss_eff", ss_eff_emp, envir = .GlobalEnv)
 # a list of traits to include with each species, traits with ss_eff_ are hack traits to extract in cell processes
-trait_names = c("dispersal", "mean_temp", "temp_width")
+trait_names = c("dispersal", "mean_temp", "temp_width") # traits expressing the flexibility of a species
 
 # ranges to scale the input environemts with:
 # not listed variable:         no scaling takes place
@@ -21,11 +21,28 @@ trait_names = c("dispersal", "mean_temp", "temp_width")
 
 # environmental_ranges = list("mean_temp"=c(9,26), "min_temp"=c(9,26),  "max_temp"=c(9,26))
 
+# Use 'stop_time' to halt execution at a specific timestep in the landscape object:
+stop_time <- "2"
+
+get_dispersal_values <- function(n, species, landscape, config) {
+  if (landscape$timestep == stop_time) {
+    browser()
+  }
+  
+  # You can also check the 'vars' object for the current timestep:
+  vars <- dynGet("vars", inherits = TRUE)
+  if (vars$ti == stop_time) {
+    browser()
+  }
+}
+
 #########################
 ### Observer Function ###
 #########################
 
 end_of_timestep_observer = function(data, vars, config){
+  browser()
+  #plot_richness(data$all_species, data$landscape)
   plot_richness(data$all_species, data$landscape)
   save_species() # saves a species and landscape objects for desired timesteps
 }
@@ -35,12 +52,12 @@ end_of_timestep_observer = function(data, vars, config){
 ### Initialization ###
 ######################
 
-create_ancestor_species <- function(landscape, config) {
+create_ancestor_species <- function(landscape, config) {                        # 
   co <- landscape$coordinates
-  new_species <- create_species(rownames(co), config)
-  new_species$traits[ , "dispersal"] <-5 # denominator of exponential distribution
-  new_species$traits[ , "mean_temp"] <- 20
-  new_species$traits[ , "temp_width"] <- 2
+  new_species <- create_species(rownames(co), config) # factors influenzing the speciation
+  new_species$traits[ , "dispersal"] <-5   # denominator of exponential distribution
+  new_species$traits[ , "mean_temp"] <- 20 # optimum temp of the species 
+  new_species$traits[ , "temp_width"] <- 2 # +- 2 degree variation from the mean value
   return(list(new_species))
 }
 
@@ -61,7 +78,7 @@ get_dispersal_values <- function(n, species, landscape, config){
 ##################
 
 # threshold for genetic distance after which a speciation event takes place
-divergence_threshold=65 # between 10 and 50 ? as 0.1 to 0.5 Myrs or 100 - 500 kyrs
+divergence_threshold=65 # between 10 and 50 ? as 0.1 to 0.5 Myrs or 100 - 500 kyrs this is the time needed for a speciation after two population remain separated
 
 # adds a value of 1 to each geographic population cluster
 get_divergence_factor <- function(species, cluster_indices, landscape, config) {
@@ -74,15 +91,15 @@ get_divergence_factor <- function(species, cluster_indices, landscape, config) {
 
 apply_evolution <- function(species, cluster_indices, landscape, config) {
   # cell names
-  trait_evolutionary_power <-0.01
-  traits <- species[["traits"]]
+  trait_evolutionary_power <-0.01  # evolution of a new trait
+  traits <- species[["traits"]]    # traits are per species and evolve within populations
   cells <- rownames(traits)
-  #homogenize trait based on abundance
+  # Homogenize trait based on abundance
   # Homogenize all traits by weighted abundance, attention, exclude here any trait that should be more neutral
   trn <- config$gen3sis$general$trait_names
   for(cluster_index in unique(cluster_indices)){
     # cluster_index <- 1
-    cells_cluster <- cells[which(cluster_indices == cluster_index)]
+    cells_cluster <- cells[which(cluster_indices == cluster_index)] # cluster is num. of populations with different traits between them
     # hist(traits[cells_cluster, "temp"], main="before")
     mean_abd <- mean(species$abundance[cells_cluster])
     weight_abd <- species$abundance[cells_cluster]/mean_abd
@@ -94,7 +111,7 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
   
   # mutate mean temperature
   mutation_deltas <-rnorm(length(traits[, ti]), mean=0, sd=trait_evolutionary_power)
-  traits[, "mean_temp"] <- traits[, "mean_temp"] + mutation_deltas
+  traits[, "mean_temp"] <- traits[, "mean_temp"] + mutation_deltas # here you drive the mutation of a traits in this case temperature. This interact with environment and then with selection.
   return(traits)
 }
 
@@ -102,11 +119,11 @@ apply_evolution <- function(species, cluster_indices, landscape, config) {
 ### Environmental and Ecological Interactions ###
 #################################################
 
-apply_ecology <- function(abundance, traits, landscape, config) {
+apply_ecology <- function(abundance, traits, landscape, config) { # n. of individuals, the species traits included in the populations, and the environmental conditions + conf. that are the drivers of this evolution and selections of traits through evolutionary processes.
   # get the difference between species and site mean temp
   diff <- abs(traits[, "mean_temp"]-landscape[,"mean_temp"])
   # set the abundance of species with a difference in mean temp larger than the species temp width to zero and the ones below to one
-  abundance[diff>traits[,"temp_width"]] <- 0
+  abundance[diff>traits[,"temp_width"]]  <- 0
   abundance[diff<=traits[,"temp_width"]] <- 1
   return(abundance)
 }
